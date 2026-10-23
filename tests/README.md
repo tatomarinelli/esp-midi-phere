@@ -10,4 +10,4 @@ Cada carpeta es un sketch independiente para flashear solo y verificar una pieza
 
 Mismo ajuste del IDE que el firmware principal: USB Mode "USB-OTG (TinyUSB)". Con arduino-cli: `--fqbn esp32:esp32:waveshare_esp32_s3_zero:USBMode=default`. Aparecen como MIDI `esp-midi-phere-test`.
 
-Estado: los tres compilan; ninguno probado en hardware (`buttons_test` y `led_bars_test` son nuevos; los prototipos viejos están en `../archive/`).
+Estado: los tres compilan; ninguno probado en hardware (`buttons_test` y `led_bars_test` son nuevos).

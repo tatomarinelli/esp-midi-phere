@@ -136,7 +136,7 @@ Separate hardware from the pots/VU bars (those stay untouched). One button + one
 |---|---|---|
 | **HC4067 analog mux (chosen, 8 buttons)** | 5 pins (S0-S3 + SIG) | See `tests/buttons_test`. |
 | Direct GPIO | 6 native GPIOs | Likely candidates: GPIO14-18 (confirmed free ADC2 pins) + one more from GPIO38/43/44 (should be free since `Serial` runs over native USB-CDC here, not the physical UART pins) — **but not yet confirmed these are physically broken out on the ESP32-S3-Zero's compact header.** Verify against the board before wiring. |
-| PCF8574 I2C GPIO expander (abandoned: reset loop, see `archive/`) | 2 pins (SDA/SCL) | Sidesteps the uncertain higher-numbered pins entirely, leaves headroom for future buttons, ~$2 part. |
+| PCF8574 I2C GPIO expander (abandoned: unresolved reset loop) | 2 pins (SDA/SCL) | Sidesteps the uncertain higher-numbered pins entirely, leaves headroom for future buttons, ~$2 part. |
 
 ### Pin budget as of this plan
 
