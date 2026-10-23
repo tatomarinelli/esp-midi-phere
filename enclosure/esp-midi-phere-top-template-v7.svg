@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="210mm" height="175mm" viewBox="0 0 210 175">
+<rect x="0" y="0" width="100%" height="100%" fill="white"/>
+<rect x="5.000" y="5.000" width="200" height="130" rx="4" ry="4" fill="none" stroke="black" stroke-width="0.3"/>
+<circle cx="31.125" cy="37.000" r="3.75" fill="none" stroke="black" stroke-width="0.25"/>
+<text x="31.125" y="44.750" font-size="3" font-family="sans-serif" text-anchor="middle" fill="black">P1</text>
+<circle cx="56.675" cy="37.000" r="3.75" fill="none" stroke="black" stroke-width="0.25"/>
+<text x="56.675" y="44.750" font-size="3" font-family="sans-serif" text-anchor="middle" fill="black">P2</text>
+<circle cx="92.225" cy="37.000" r="3.75" fill="none" stroke="black" stroke-width="0.25"/>
+<text x="92.225" y="44.750" font-size="3" font-family="sans-serif" text-anchor="middle" fill="black">P3</text>
+<circle cx="117.775" cy="37.000" r="3.75" fill="none" stroke="black" stroke-width="0.25"/>
+<text x="117.775" y="44.750" font-size="3" font-family="sans-serif" text-anchor="middle" fill="black">P4</text>
+<circle cx="153.325" cy="37.000" r="3.75" fill="none" stroke="black" stroke-width="0.25"/>
+<text x="153.325" y="44.750" font-size="3" font-family="sans-serif" text-anchor="middle" fill="black">P5</text>
+<circle cx="178.875" cy="37.000" r="3.75" fill="none" stroke="black" stroke-width="0.25"/>
+<text x="178.875" y="44.750" font-size="3" font-family="sans-serif" text-anchor="middle" fill="black">P6</text>
+<circle cx="31.125" cy="79.000" r="3.75" fill="none" stroke="black" stroke-width="0.25"/>
+<text x="31.125" y="86.750" font-size="3" font-family="sans-serif" text-anchor="middle" fill="black">P7</text>
+<circle cx="56.675" cy="79.000" r="3.75" fill="none" stroke="black" stroke-width="0.25"/>
+<text x="56.675" y="86.750" font-size="3" font-family="sans-serif" text-anchor="middle" fill="black">P8</text>
+<circle cx="92.225" cy="79.000" r="3.75" fill="none" stroke="black" stroke-width="0.25"/>
+<text x="92.225" y="86.750" font-size="3" font-family="sans-serif" text-anchor="middle" fill="black">P9</text>
+<circle cx="117.775" cy="79.000" r="3.75" fill="none" stroke="black" stroke-width="0.25"/>
+<text x="117.775" y="86.750" font-size="3" font-family="sans-serif" text-anchor="middle" fill="black">P10</text>
+<circle cx="153.325" cy="79.000" r="3.75" fill="none" stroke="black" stroke-width="0.25"/>
+<text x="153.325" y="86.750" font-size="3" font-family="sans-serif" text-anchor="middle" fill="black">P11</text>
+<circle cx="178.875" cy="79.000" r="3.75" fill="none" stroke="black" stroke-width="0.25"/>
+<text x="178.875" y="86.750" font-size="3" font-family="sans-serif" text-anchor="middle" fill="black">P12</text>
+<rect x="18.350" y="17.050" width="51.1" height="10.2" fill="none" stroke="#c0392b" stroke-width="0.3"/>
+<text x="43.900" y="15.050" font-size="3.2" font-family="sans-serif" text-anchor="middle" fill="#c0392b">L1 (P1+P2)</text>
+<rect x="79.450" y="17.050" width="51.1" height="10.2" fill="none" stroke="#c0392b" stroke-width="0.3"/>
+<text x="105.000" y="15.050" font-size="3.2" font-family="sans-serif" text-anchor="middle" fill="#c0392b">L2 (P3+P4)</text>
+<rect x="140.550" y="17.050" width="51.1" height="10.2" fill="none" stroke="#c0392b" stroke-width="0.3"/>
+<text x="166.100" y="15.050" font-size="3.2" font-family="sans-serif" text-anchor="middle" fill="#c0392b">L3 (P5+P6)</text>
+<rect x="18.350" y="59.050" width="51.1" height="10.2" fill="none" stroke="#c0392b" stroke-width="0.3"/>
+<text x="43.900" y="57.050" font-size="3.2" font-family="sans-serif" text-anchor="middle" fill="#c0392b">L4 (P7+P8)</text>
+<rect x="79.450" y="59.050" width="51.1" height="10.2" fill="none" stroke="#c0392b" stroke-width="0.3"/>
+<text x="105.000" y="57.050" font-size="3.2" font-family="sans-serif" text-anchor="middle" fill="#c0392b">L5 (P9+P10)</text>
+<rect x="140.550" y="59.050" width="51.1" height="10.2" fill="none" stroke="#c0392b" stroke-width="0.3"/>
+<text x="166.100" y="57.050" font-size="3.2" font-family="sans-serif" text-anchor="middle" fill="#c0392b">L6 (P11+P12)</text>
+<rect x="79.450" y="96.900" width="51.1" height="10.2" fill="none" stroke="#c0392b" stroke-width="0.3"/>
+<text x="105.000" y="94.900" font-size="3.2" font-family="sans-serif" text-anchor="middle" fill="#c0392b">L7 (buttons status, 8 LEDs)</text>
+<rect x="31.780" y="117.750" width="12.5" height="12.5" rx="1.2" ry="1.2" fill="none" stroke="black" stroke-width="0.3"/>
+<text x="38.030" y="134.250" font-size="3" font-family="sans-serif" text-anchor="middle" fill="black">B1</text>
+<rect x="47.020" y="117.750" width="12.5" height="12.5" rx="1.2" ry="1.2" fill="none" stroke="black" stroke-width="0.3"/>
+<text x="53.270" y="134.250" font-size="3" font-family="sans-serif" text-anchor="middle" fill="black">B2</text>
+<rect x="62.260" y="117.750" width="12.5" height="12.5" rx="1.2" ry="1.2" fill="none" stroke="black" stroke-width="0.3"/>
+<text x="68.510" y="134.250" font-size="3" font-family="sans-serif" text-anchor="middle" fill="black">B3</text>
+<rect x="77.500" y="117.750" width="12.5" height="12.5" rx="1.2" ry="1.2" fill="none" stroke="black" stroke-width="0.3"/>
+<text x="83.750" y="134.250" font-size="3" font-family="sans-serif" text-anchor="middle" fill="black">B4</text>
+<rect x="120.000" y="117.750" width="12.5" height="12.5" rx="1.2" ry="1.2" fill="none" stroke="black" stroke-width="0.3"/>
+<text x="126.250" y="134.250" font-size="3" font-family="sans-serif" text-anchor="middle" fill="black">B5</text>
+<rect x="135.240" y="117.750" width="12.5" height="12.5" rx="1.2" ry="1.2" fill="none" stroke="black" stroke-width="0.3"/>
+<text x="141.490" y="134.250" font-size="3" font-family="sans-serif" text-anchor="middle" fill="black">B6</text>
+<rect x="150.480" y="117.750" width="12.5" height="12.5" rx="1.2" ry="1.2" fill="none" stroke="black" stroke-width="0.3"/>
+<text x="156.730" y="134.250" font-size="3" font-family="sans-serif" text-anchor="middle" fill="black">B7</text>
+<rect x="165.720" y="117.750" width="12.5" height="12.5" rx="1.2" ry="1.2" fill="none" stroke="black" stroke-width="0.3"/>
+<text x="171.970" y="134.250" font-size="3" font-family="sans-serif" text-anchor="middle" fill="black">B8</text>
+<circle cx="28.890" cy="124.000" r="1.6" fill="none" stroke="#2980b9" stroke-width="0.25"/>
+<text x="28.890" y="120.000" font-size="2.6" font-family="sans-serif" text-anchor="middle" fill="#2980b9">S1</text>
+<circle cx="92.890" cy="124.000" r="1.6" fill="none" stroke="#2980b9" stroke-width="0.25"/>
+<text x="92.890" y="120.000" font-size="2.6" font-family="sans-serif" text-anchor="middle" fill="#2980b9">S2</text>
+<circle cx="117.110" cy="124.000" r="1.6" fill="none" stroke="#2980b9" stroke-width="0.25"/>
+<text x="117.110" y="120.000" font-size="2.6" font-family="sans-serif" text-anchor="middle" fill="#2980b9">S3</text>
+<circle cx="181.110" cy="124.000" r="1.6" fill="none" stroke="#2980b9" stroke-width="0.25"/>
+<text x="181.110" y="120.000" font-size="2.6" font-family="sans-serif" text-anchor="middle" fill="#2980b9">S4</text>
+<circle cx="12.000" cy="12.000" r="2.5" fill="none" stroke="#27ae60" stroke-width="0.25"/>
+<circle cx="12.000" cy="12.000" r="1.1" fill="none" stroke="#27ae60" stroke-width="0.15"/>
+<text x="12.000" y="7.500" font-size="3" font-family="sans-serif" text-anchor="middle" fill="#27ae60">M1</text>
+<circle cx="198.000" cy="12.000" r="2.5" fill="none" stroke="#27ae60" stroke-width="0.25"/>
+<circle cx="198.000" cy="12.000" r="1.1" fill="none" stroke="#27ae60" stroke-width="0.15"/>
+<text x="198.000" y="7.500" font-size="3" font-family="sans-serif" text-anchor="middle" fill="#27ae60">M2</text>
+<circle cx="12.000" cy="128.000" r="2.5" fill="none" stroke="#27ae60" stroke-width="0.25"/>
+<circle cx="12.000" cy="128.000" r="1.1" fill="none" stroke="#27ae60" stroke-width="0.15"/>
+<text x="12.000" y="123.500" font-size="3" font-family="sans-serif" text-anchor="middle" fill="#27ae60">M3</text>
+<circle cx="198.000" cy="128.000" r="2.5" fill="none" stroke="#27ae60" stroke-width="0.25"/>
+<circle cx="198.000" cy="128.000" r="1.1" fill="none" stroke="#27ae60" stroke-width="0.15"/>
+<text x="198.000" y="123.500" font-size="3" font-family="sans-serif" text-anchor="middle" fill="#27ae60">M4</text>
+<line x1="69.450" y1="22.150" x2="79.450" y2="22.150" stroke="#8e44ad" stroke-width="0.3"/>
+<text x="74.450" y="20.650" font-size="2.6" font-family="sans-serif" text-anchor="middle" fill="#8e44ad">10.0</text>
+<line x1="130.550" y1="22.150" x2="140.550" y2="22.150" stroke="#8e44ad" stroke-width="0.3"/>
+<text x="135.550" y="20.650" font-size="2.6" font-family="sans-serif" text-anchor="middle" fill="#8e44ad">10.0</text>
+<text x="105.000" y="143.000" font-size="3.2" font-family="sans-serif" text-anchor="middle" fill="#c0392b">200mm total width</text>
+<text x="208.500" y="70.000" font-size="3.2" font-family="sans-serif" text-anchor="middle" fill="#c0392b" transform="rotate(-90 208.500 70.000)">130mm total height</text>
+<text x="5" y="147.000" font-size="4" font-family="sans-serif" fill="black">SCALE CHECK -- this line must measure exactly 100.0mm when printed:</text>
+<line x1="5" y1="155.000" x2="105.000" y2="155.000" stroke="black" stroke-width="0.4"/>
+<line x1="5.000" y1="152.000" x2="5.000" y2="158.000" stroke="black" stroke-width="0.3"/>
+<text x="5.000" y="163.000" font-size="2.6" font-family="sans-serif" text-anchor="middle" fill="black">0</text>
+<line x1="15.000" y1="152.000" x2="15.000" y2="158.000" stroke="black" stroke-width="0.3"/>
+<text x="15.000" y="163.000" font-size="2.6" font-family="sans-serif" text-anchor="middle" fill="black">10</text>
+<line x1="25.000" y1="152.000" x2="25.000" y2="158.000" stroke="black" stroke-width="0.3"/>
+<text x="25.000" y="163.000" font-size="2.6" font-family="sans-serif" text-anchor="middle" fill="black">20</text>
+<line x1="35.000" y1="152.000" x2="35.000" y2="158.000" stroke="black" stroke-width="0.3"/>
+<text x="35.000" y="163.000" font-size="2.6" font-family="sans-serif" text-anchor="middle" fill="black">30</text>
+<line x1="45.000" y1="152.000" x2="45.000" y2="158.000" stroke="black" stroke-width="0.3"/>
+<text x="45.000" y="163.000" font-size="2.6" font-family="sans-serif" text-anchor="middle" fill="black">40</text>
+<line x1="55.000" y1="152.000" x2="55.000" y2="158.000" stroke="black" stroke-width="0.3"/>
+<text x="55.000" y="163.000" font-size="2.6" font-family="sans-serif" text-anchor="middle" fill="black">50</text>
+<line x1="65.000" y1="152.000" x2="65.000" y2="158.000" stroke="black" stroke-width="0.3"/>
+<text x="65.000" y="163.000" font-size="2.6" font-family="sans-serif" text-anchor="middle" fill="black">60</text>
+<line x1="75.000" y1="152.000" x2="75.000" y2="158.000" stroke="black" stroke-width="0.3"/>
+<text x="75.000" y="163.000" font-size="2.6" font-family="sans-serif" text-anchor="middle" fill="black">70</text>
+<line x1="85.000" y1="152.000" x2="85.000" y2="158.000" stroke="black" stroke-width="0.3"/>
+<text x="85.000" y="163.000" font-size="2.6" font-family="sans-serif" text-anchor="middle" fill="black">80</text>
+<line x1="95.000" y1="152.000" x2="95.000" y2="158.000" stroke="black" stroke-width="0.3"/>
+<text x="95.000" y="163.000" font-size="2.6" font-family="sans-serif" text-anchor="middle" fill="black">90</text>
+<line x1="105.000" y1="152.000" x2="105.000" y2="158.000" stroke="black" stroke-width="0.3"/>
+<text x="105.000" y="163.000" font-size="2.6" font-family="sans-serif" text-anchor="middle" fill="black">100</text>
+</svg>

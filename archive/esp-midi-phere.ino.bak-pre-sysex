@@ -1,0 +1,214 @@
+/*
+  esp-midi-phere - USB-MIDI pot controller with per-pot LED level meters
+  Board: Waveshare ESP32-S3-Zero
+
+  Arduino IDE setup (Tools menu):
+    Board:            "ESP32S3 Dev Module"
+    USB Mode:         "USB-OTG (TinyUSB)"   <- required for native USB-MIDI
+    USB CDC On Boot:  "Enabled"             <- optional, gives Serial over the same USB port
+
+  Requires:
+    - Arduino-ESP32 core 3.x (Boards Manager: "esp32" by Espressif Systems)
+    - "Adafruit NeoPixel" library (Library Manager)
+
+  Wiring (B10K pots, wiper to GPIO, outer legs to 3V3 and GND):
+    Pot 1: wiper -> GPIO1  (ADC1_CH0)
+    Pot 2: wiper -> GPIO2  (ADC1_CH1)
+    Pot 3: wiper -> GPIO3  (ADC1_CH2)
+    Pot 4: wiper -> GPIO4  (ADC1_CH3)
+    Pot 5: wiper -> GPIO5  (ADC1_CH4)
+    Pot 6: wiper -> GPIO6  (ADC1_CH5)
+    Pot 7: wiper -> GPIO7  (ADC1_CH6)
+    Pot 8: wiper -> GPIO8  (ADC1_CH7)
+    Pot 9: wiper -> GPIO9  (ADC1_CH8)
+    Pot 10: wiper -> GPIO10 (ADC1_CH9)
+  All pots share the same 3V3 and GND rails.
+
+  LED meters: 5x Adafruit NeoPixel Stick (8 x SK6812/WS2812 5050), each stick
+  shared by 2 adjacent pots (4 segments each), chained data-out -> data-in,
+  single data wire -> GPIO11. Chain power (5V/GND) comes from the board's 5V
+  pad (USB VBUS), NOT the 3V3 pin -- the onboard 3.3V regulator is rated
+  800mA and also has to run the ESP32-S3 itself. GND is shared with the board.
+  Since pixels are individually addressable, "2 pots per stick" needs no
+  special-case firmware -- pixel order in the chain already maps cleanly onto
+  4 pixels per pot as long as wiring order matches pot order (stick 1 =
+  pots 1+2, stick 2 = pots 3+4, ... stick 5 = pots 9+10).
+
+  Onboard WS2812 (GPIO21) is just a dim "alive" indicator once USB-MIDI is up.
+
+  MIDI in: CC20-CC29 on channel 1 set pot 1-10's bar level (0-127 -> 0-4 lit
+  segments, solid orange, with the leading edge segment's brightness ramping
+  for smoother in-between resolution). Ableton's Remote Script sends these,
+  reflecting the real Macro value in Live (not just the pot's own raw
+  position).
+  The device shows up in your DAW as "esp-midi-phere".
+*/
+
+#if ARDUINO_USB_MODE
+#warning "This sketch needs USB Mode set to 'USB-OTG (TinyUSB)' in the Tools menu"
+void setup() {}
+void loop() {}
+#else
+
+#include "USB.h"
+#include "USBMIDI.h"
+#include <Adafruit_NeoPixel.h>
+
+USBMIDI MIDI("esp-midi-phere");
+
+// One entry per pot.
+const uint8_t potPins[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+const uint8_t ccNumbers[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+const uint8_t midiChannel = 1;
+const uint8_t numPots = sizeof(potPins) / sizeof(potPins[0]);
+
+const uint16_t adcMax = 4095;       // 12-bit ADC
+const uint8_t oversampleCount = 8;  // ADC reads averaged per scan, cuts raw noise variance
+const float emaAlpha = 0.3f;        // smoothing: higher = more responsive, lower = smoother
+const float sendThreshold = 0.6f;   // MIDI-unit hysteresis before a new value is sent
+const uint16_t scanIntervalMs = 2;  // how often the pots are read
+
+const uint8_t rgbLedPin = 21;  // onboard WS2812, "alive" indicator only
+
+// --- Per-pot LED bar meters ---
+const uint8_t ledDataPin = 11;         // NeoPixel Stick chain data line
+const uint8_t segmentsPerBar = 4;      // half a NeoPixel Stick per pot (stick shared by 2 pots)
+const uint16_t numPixels = (uint16_t)numPots * segmentsPerBar;
+const uint8_t ledBrightnessCap = 40;   // global brightness cap (0-255), keeps current draw sane
+const uint8_t ledCcBase = 20;          // pot i's bar level arrives on CC (ledCcBase + i)
+
+Adafruit_NeoPixel strip(numPixels, ledDataPin, NEO_GRB + NEO_KHZ800);
+
+float filtered[numPots];
+float lastSentMidi[numPots];  // continuous MIDI-unit position of the last value sent
+bool everSent[numPots];
+uint32_t lastScan = 0;
+
+// The ESP32 ADC has a few LSBs of inherent read noise. A single analogRead()
+// per scan lets that noise flip the mapped MIDI value back and forth forever
+// (e.g. 79/80/79/80...). Averaging several reads per scan removes most of it
+// before the EMA filter and threshold check ever see it.
+int readPotRaw(uint8_t pin) {
+  uint32_t sum = 0;
+  for (uint8_t s = 0; s < oversampleCount; s++) {
+    sum += analogRead(pin);
+  }
+  return sum / oversampleCount;
+}
+
+float adcToMidiFloat(float raw) {
+  float v = 127.0f - (raw / adcMax) * 127.0f;  // inverted: wiring has 0V/3V3 swapped vs. rotation direction
+  if (v < 0) {
+    v = 0;
+  }
+  if (v > 127) {
+    v = 127;
+  }
+  return v;
+}
+
+// Single-color (orange) meter: fully-lit segments up to the value's position,
+// plus one "edge" segment whose brightness ramps with the fractional part --
+// gives smoother, more analog-feeling resolution than a hard step between
+// the discrete segments would alone. Scales with segmentsPerBar instead of
+// a fixed segment count.
+const uint8_t orangeR = 255;
+const uint8_t orangeG = 140;
+
+uint32_t scaledOrange(float fraction) {
+  if (fraction < 0) fraction = 0;
+  if (fraction > 1) fraction = 1;
+  return strip.Color((uint8_t)(orangeR * fraction), (uint8_t)(orangeG * fraction), 0);
+}
+
+void setBarLevel(uint8_t potIndex, uint8_t value) {
+  float position = (float)value / 127.0f * segmentsPerBar;  // 0..segmentsPerBar
+  if (position > segmentsPerBar) {
+    position = segmentsPerBar;
+  }
+  uint8_t fullSegments = (uint8_t)position;
+  float fraction = position - fullSegments;  // brightness of the one edge segment, 0..1
+  if (fullSegments >= segmentsPerBar) {
+    fullSegments = segmentsPerBar;
+    fraction = 0.0f;
+  }
+
+  uint16_t base = (uint16_t)potIndex * segmentsPerBar;
+  for (uint8_t s = 0; s < segmentsPerBar; s++) {
+    if (s < fullSegments) {
+      strip.setPixelColor(base + s, scaledOrange(1.0f));
+    } else if (s == fullSegments && fraction > 0.0f) {
+      strip.setPixelColor(base + s, scaledOrange(fraction));
+    } else {
+      strip.setPixelColor(base + s, 0);
+    }
+  }
+  strip.show();
+}
+
+// Incoming CC -> per-pot bar level.
+void handleMidiIn(const midiEventPacket_t &packet) {
+  uint8_t status = packet.byte1 & 0xF0;
+  uint8_t channel = (packet.byte1 & 0x0F) + 1;  // 1-indexed, matches controlChange()'s channel param
+  if (status == 0xB0 && channel == midiChannel) {
+    uint8_t cc = packet.byte2;
+    if (cc >= ledCcBase && cc < ledCcBase + numPots) {
+      setBarLevel(cc - ledCcBase, packet.byte3);
+    }
+  }
+}
+
+void setup() {
+  Serial.begin(115200);
+
+  for (uint8_t i = 0; i < numPots; i++) {
+    pinMode(potPins[i], INPUT);
+    filtered[i] = readPotRaw(potPins[i]);  // seed the filter so it doesn't ramp up from 0
+    everSent[i] = false;
+  }
+
+  strip.begin();
+  strip.setBrightness(ledBrightnessCap);
+  strip.clear();
+  strip.show();
+
+  rgbLedWrite(rgbLedPin, 0, 0, 0);
+
+  MIDI.begin();
+  USB.begin();
+
+  rgbLedWrite(rgbLedPin, 8, 8, 8);  // dim "alive" indicator
+}
+
+void loop() {
+  // Drain incoming MIDI immediately, independent of the pot scan interval below.
+  midiEventPacket_t rx;
+  while (MIDI.readPacket(&rx)) {
+    handleMidiIn(rx);
+  }
+
+  uint32_t now = millis();
+  if (now - lastScan < scanIntervalMs) {
+    return;
+  }
+  lastScan = now;
+
+  for (uint8_t i = 0; i < numPots; i++) {
+    int raw = readPotRaw(potPins[i]);
+    filtered[i] += (raw - filtered[i]) * emaAlpha;
+
+    // Hysteresis is measured against the continuous position, not the rounded
+    // MIDI value -- comparing rounded values with a >=2 threshold would only
+    // accept every other step once the pot moves one step per scan, locking
+    // onto odd or even values and silently losing half the range.
+    float midiFloat = adcToMidiFloat(filtered[i]);
+    if (!everSent[i] || fabsf(midiFloat - lastSentMidi[i]) >= sendThreshold) {
+      uint8_t value = (uint8_t)(midiFloat + 0.5f);
+      MIDI.controlChange(ccNumbers[i], value, midiChannel);
+      lastSentMidi[i] = midiFloat;
+      everSent[i] = true;
+    }
+  }
+}
+
+#endif /* ARDUINO_USB_MODE */
