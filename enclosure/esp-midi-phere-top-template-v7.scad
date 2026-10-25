@@ -78,7 +78,7 @@ lid_channels = [
 
 cradle_t = 2.4;
 
-part = "preview"; // "shell" | "panel" | "panel_print" (panel flipped for printing) | "preview" (both, panel ghosted)
+part = "preview"; // "shell" | "panel" | "panel_print" (panel flipped for printing)  | "preview" (both, panel ghosted)
 
 panel_w   = 200;
 panel_h   = 130;
@@ -332,15 +332,7 @@ module shell_extras() {
   // USB-C extender: no pads or screw holes (the connector has its own)
   // the right-angle plug (12 x 6.4 x 20 mm) rests in an open cradle: the ESP's port holds it, so no clip is needed
   cradle_z(plug_x - 10, plug_x + 10, plug_x, 18, 13.5, plug_y - 3.2 + 4, 4);
-  // The USB cable lies on the floor and is held by three semi-closed clips: the mouth is 0.6 mm wider than the cable, so it goes in
-  // without force (nothing depends on a snap fit); the lips only cover part of the top. Near the body's exit, near the plug, and one
-  // wider clip that gathers the two strands of the loose loop of spare cable.
-  usb_cable_d = 3.8;  usb_mouth = usb_cable_d + 0.8;  usb_slot = usb_cable_d + 2.0;   // chamber 5.8 mm, mouth 4.6 mm: lips of 0.6 per side
-  usb_lip = (usb_slot - usb_mouth) / 2;  usb_top = -24.4;  usb_depth = 5.3;           // top of the clip, 1.5 mm above the cable
-  usb_len = 8;                                                                        // length of each nozzle along the cable
-  cradle_x(54, 36.1, 46.9, 41.5, usb_slot, usb_top, usb_depth, usb_lip, usb_len);
-  cradle_x(140, 4.1, 14.9, 9.5, usb_slot, usb_top, usb_depth, usb_lip, usb_len);
-  cradle_x(100, 54.0, 68.0, 61, 2*usb_cable_d + 2.0, usb_top, usb_depth, usb_lip, usb_len);
+  // (no guides for the USB cable yet: to be iterated)
   // (no wire grips on the floor: the wires live near the lid so they come with it when it is opened)
 }
 module shell_cuts() {
@@ -377,6 +369,32 @@ module shell() {
 
 if (part == "shell") {
   color([0.75, 0.76, 0.78, 1]) shell();
+} else if (part == "test_lid") {
+  // test print 1: the top-left 100 x 45 mm of the real panel (M1 post hole, L1 window, pots 1-2, the top corridor with its arches, the
+  // pot-row grip with its 3 holes, the L1 drop). Same orientation as panel_print: front face on the bed.
+  translate([0, panel_h, plate_t]) rotate([180, 0, 0]) intersection() {
+    panel();
+    translate([-1, panel_h - 45, -30]) cube([101, 46, 40]);
+  }
+} else if (part == "test_holes") {
+  // test print 2 (10 min): the three pot hole sizes and the three button window sizes, to see which one your parts fit
+  difference() {
+    union() { cube([70, 36, plate_t]); }
+    for (i = [0 : 2]) translate([12 + i * 20, 10, -1]) cylinder(h = plate_t + 2, d = pot_hole_d - 0.2 + i * 0.2, $fn = 48);   // 7.3 7.5 7.7
+    for (i = [0 : 2]) translate([5 + i * 21, 20, -1]) cube([btn_w - 0.2 + i * 0.2, btn_w - 0.2 + i * 0.2, plate_t + 2]);          // 12.3 12.5 12.7
+  }
+} else if (part == "test_socket") {
+  // test print 3: the floor with the protoboard socket (4 standoffs + corner lips); put your board on it
+  intersection() {
+    shell();
+    translate([proto_x0 - 4, panel_h - (proto_z0 + proto_d) - 4, 0]) cube([proto_w + 8, proto_d + 8, 12]);
+  }
+} else if (part == "test_usbcut") {
+  // test print 4: the corner of the top wall with the USB-C extender opening, to try the connector body in it
+  intersection() {
+    shell();
+    translate([ext_x - 20, panel_h - 24, 0]) cube([40, 25, 16]);
+  }
 } else if (part == "panel_print") {
   // front face on the bed: ribs, lips and grips grow upward (no supports)
   color([0.8, 0.8, 0.85, 1]) translate([0, panel_h, plate_t]) rotate([180, 0, 0]) panel();

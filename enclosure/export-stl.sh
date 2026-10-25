@@ -9,3 +9,10 @@ mkdir -p "$OUT"
 openscad -o "$OUT/panel_print.stl" --export-format binstl -D 'part="panel_print"' "$SCAD"
 openscad -o "$OUT/shell.stl" --export-format binstl -D 'part="shell"' "$SCAD"
 ls -l "$OUT"
+
+# test prints (small pieces to check tolerances before printing the full lid and base): enclosure/test-prints/
+mkdir -p test-prints
+for t in test_lid test_holes test_socket test_usbcut; do
+  openscad -o "test-prints/$t.stl" --export-format binstl -D "part=\"$t\"" "$SCAD"
+done
+ls -l test-prints
