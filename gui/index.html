@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Phere Controller</title><link rel="stylesheet" href="style.css">
+<script type="importmap">{"imports":{"three":"./assets/vendor/three/three.module.js"}}</script></head>
+<body>
+<aside class="rail">
+  <div class="brand">
+    <h1>Phere Controller</h1>
+    <div class="live">
+      <span id="status" class="status">Sin conexión</span>
+      <span id="progress" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+    </div>
+    <p id="log" class="log" role="status"></p>
+  </div>
+
+  <div class="block">
+    <label class="field"><span>Entrada</span><select id="inSel"></select></label>
+    <label class="field"><span>Salida</span><select id="outSel"></select></label>
+    <button id="connect" class="primary wide">Conectar</button>
+  </div>
+
+  <nav id="tabs" aria-label="Secciones"></nav>
+
+  <div class="block actions">
+    <div class="pair">
+      <button id="read" title="Carga la config guardada en el ESP">Leer</button>
+      <button id="apply" title="Aplica la config al ESP sin guardarla (vista previa)">Aplicar</button>
+    </div>
+    <button id="save" class="wide">Guardar<span id="dirty" class="badge" hidden></span></button>
+    <div class="pair">
+      <button id="export">Exportar</button>
+      <button id="import">Importar</button>
+      <input type="file" id="file" accept=".json" hidden>
+    </div>
+    <button id="boot" class="warn wide" title="Reinicia el ESP en modo descarga para flashear">Bootloader</button>
+  </div>
+</aside>
+
+<main>
+  <section id="sec-monitor">
+    <div class="page-head"><h2>Monitor</h2><p class="lede">Los pots en vivo (CC1 a CC12). Cada deslizador manda CC20 en adelante para probar su barra LED.</p></div>
+    <div id="meters" class="grid"></div>
+  </section>
+  <section id="sec-pots">
+    <div class="page-head"><h2>Pots</h2><p class="lede">Qué CC y qué canal MIDI envía cada pot, y cómo se mapea su recorrido.</p></div>
+    <div id="potsTbl"></div>
+  </section>
+  <section id="sec-leds">
+    <div class="page-head"><h2>Barras LED</h2><p class="lede">Color, brillo y forma de cada barra. Un brillo de 100 % es el tope seguro del firmware.</p></div>
+    <div id="ledsTbl"></div>
+  </section>
+  <section id="sec-targets">
+    <div class="page-head"><h2>Destinos</h2><p class="lede">Cada pot controla un Macro (por nombre) o el send de una o varias pistas. Con varias pistas todas toman el mismo valor y la barra sigue a la primera.</p></div>
+    <div id="targetsTbl"></div>
+  </section>
+  <section id="sec-buttons">
+    <div class="page-head"><h2>Botones</h2><p class="lede">Qué hace cada botón y qué nota MIDI envía. El monitoreo actúa sobre las pistas de Live que indiques.</p></div>
+    <div id="btnsTbl"></div>
+  </section>
+  <section id="sec-firmware">
+    <div class="page-head"><h2>Firmware</h2><p class="lede">Comprueba que el ESP responde o vuelve a los valores de fábrica. Actualizar el firmware desde el navegador llega más adelante.</p></div>
+    <div class="row"><button id="ping">Probar conexión</button><button id="reset">Restaurar valores de fábrica</button></div>
+  </section>
+  <section id="sec-preview">
+    <div class="page-head"><h2>Preview</h2><p class="lede">Tu configuración sobre el panel de la caja v7. En azul lo que cambió, en rojo lo que usa un canal distinto al resto.</p></div>
+    <div id="panelSvg"></div>
+    <h3>Canales</h3>
+    <ul id="chanNotes"></ul>
+    <h3>Cambios sin guardar <span id="changeCount" class="note"></span></h3>
+    <ul id="changes"></ul>
+  </section>
+  <section id="sec-wiring">
+    <div class="page-head"><h2>Cableado</h2><p class="lede">Cómo queda todo soldado dentro de la caja v7: barras LED en cadena, pots con masa común, botones al MUX y la placa con el ESP en la esquina superior derecha. Arrastrá para girar, rueda para acercar, clic en un cable para ver su red.</p></div>
+    <div id="wiringHost"></div>
+  </section>
+  <div id="toast" role="status" aria-live="polite"></div>
+</main>
+<script src="app.js"></script>
+</body></html>
